@@ -16,10 +16,10 @@ function App() {
         <div style={{ padding: "20px" }}>
           
           <Routes>
+          <Route path="/" element={<HomePage />} />
             <Route path="/home" element={<Home />} />
             <Route path="/contact" element={<Contact />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/" element={<HomePage />} />
+            <Route path="/about" element={<About />} /> 
           </Routes>
           
         </div>
