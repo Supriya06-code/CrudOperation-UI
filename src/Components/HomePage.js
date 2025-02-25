@@ -5,6 +5,8 @@ import { Button } from '@mui/material';
 import CrudServices from '../Services/CrudServices';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+
+//Creating an instance of CrudServices
 const service = new CrudServices();
 export default class HomePage extends Component {
   constructor() {
@@ -13,32 +15,36 @@ export default class HomePage extends Component {
       UserId:'',
       UserName: '',
       Age: '',
-      DataRecord: [],
-      UpdateFlag:false
+      DataRecord: [],//Stores fetched record
+      UpdateFlag:false // Flag to check if we are updating an existing record
     }
   }
 
+  // Lifecycle method - componentWillMount 
   componentWillMount() {
     console.log("Component Will Mount Calling");
     this.ReadRecord();
 
   }
 
+  // Function to fetch records from the API
   ReadRecord() {
     service.ReadRecord().then((data) => {
       console.log(data)
       console.log(data.data.readRecordData)
-      this.setState({ DataRecord: data.data.readRecordData })
+      this.setState({ DataRecord: data.data.readRecordData })// Updating state with fetched data
     }).catch((error) => {
       console.log(error)
     })
   }
 
-
+  // Handle input changes dynamically for all fields
   handleChange = (event) => {
     const { name, value } = event.target;
     this.setState({ [name]: value }, () => console.log(this.state));
   }
+
+  // Handle submit button click
   handleClick = () => {
     if (this.state.UserName === '' || this.state.Age === '') {
       console.log("Input Field Is Empty");
@@ -49,6 +55,7 @@ export default class HomePage extends Component {
 
  if(this.state.UpdateFlag === false){
 
+   // Create new record
     const data = {
       userName: this.state.UserName,
       age: Number(this.state.Age),
@@ -59,11 +66,12 @@ export default class HomePage extends Component {
       .CreateRecord(data)
       .then((data) => {
         console.log(data)
-        this.ReadRecord()
+        this.ReadRecord()// Refresh records after creation
       }).catch((error) => {
         console.log(error)
       })
   }else{
+    // Update existing record
     const data = {
       id: Number(this.state.UserId),
       userName: this.state.UserName,
@@ -74,13 +82,16 @@ export default class HomePage extends Component {
     service.UpdateRecord(data)
     .then((data)=>{
     console.log(data)
-    this.ReadRecord()
+    this.ReadRecord() // Refresh records after update
   }).catch((error)=>{
     console.log(error);
   })
   }
+   // Reset form fields and update flag after operation
   this.setState({UpdateFlag:false, UserName:'', Age:''})
   }
+
+   // Function to handle edit action
   handleEdit = (data) => {
     this.setState({
       UserName:data.userName,
@@ -90,13 +101,15 @@ export default class HomePage extends Component {
       
     })
   }
+
+  // Function to handle delete action
   handleDelete = (datas) => {
     const data = {
       id: Number(datas.id),
     }
     service.DeleteRecord(data).then((data)=>{
       console.log(data)
-      this.ReadRecord()
+      this.ReadRecord()// Refresh records after deletion
     }).catch((error)=>{
       console.log(error)
     })

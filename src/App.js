@@ -1,11 +1,33 @@
-import logo from './logo.svg';
-import './App.css';
-import HomePage from './Components/HomePage';
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import HomePage from "./Components/HomePage";
+import Home from "./Components/Home";
+import Contact from "./Components/Contact";
+import About from "./Components/About";
+import Navbar from "./Components/Navbar";
+
+
 function App() {
   return (
-    <div className="App">
-     <HomePage/>
-    </div>
+    <Router>
+      <div className="App">
+      
+        <Navbar /> {/* Navigation Bar */}
+        <div style={{ padding: "20px" }}>
+          
+          <Routes>
+            <Route path="/home" element={<Home />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/" element={<HomePage />} />
+          </Routes>
+          
+        </div>
+       
+      </div>
+
+    </Router>
+    
   );
 }
 
